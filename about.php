@@ -7,6 +7,9 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <?php
+        include 'navbar.php';
+        ?>
         <h1>About</h1>
         <p>about us</p>
         <button class="btn">click me </button>

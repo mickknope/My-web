@@ -9,6 +9,9 @@
 </head>
 
 <body>
+    <?php
+    include 'navbar.php';
+    ?>
     <div class="form-container">
         <h1> สมัครสมาชิก </h1>
         <form action="register_process.php" method="post">
