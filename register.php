@@ -3,30 +3,67 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="device-width" , initial-scale="1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <?php
-    include 'navbar.php';
+        require "config.php";
+
+        $message = "";
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $name = trim($_POST["name"]);
+            $email = trim($_POST["email"]);
+            $password = $_POST["password"];
+
+            if ($name == "" || $email == "" || $password == "") {
+                $message = "กรุณากรอกข้อมูลให้ครบ";
+            } else {
+                $hashPassword = password_hash($password, PASSWORD_DEFAULT);
+                // $hashPassword = $password;
+
+                $sql = "INSERT INTO tbl_user (name, email, password) VALUES (?, ?, ?)";
+                $stmt = mysqli_prepare($conn, $sql);
+
+                mysqli_stmt_bind_param($stmt, "sss", $name, $email, $hashPassword);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    $message = "สมัครสมาชิกสำเร็จ";
+                } else {
+                    $message = "อีเมลนี้ถูกใช้งานแล้ว";
+                }
+
+                mysqli_stmt_close($stmt);
+            }
+        }
     ?>
+
+    <?php
+    include 'navbar.php';  
+    ?>
+    <link rel="stylesheet" href="style.css">
     <div class="form-container">
-        <h1> สมัครสมาชิก </h1>
-        <form action="register_process.php" method="post">
-            <label for="username" class="label"> ชื่อผู้ใช้: </label>
-            <input type="text" id="username" name="username" required class="input-feild"><br><br>
+        <h1>สมัครสมาชิก</h1>
+        <form action="register.php" method="post">
+            <label for="name" class="label">ชื่อผู้ใช้:</label>
+            <input type="text" id="name" name="name" required class="input-field"><br><br>
 
-            <label for="email" class="label"> อีเมล: </label>
-            <input type="email" id="email" name="email" required class="input-feild"><br><br>
+            <label for="email" class="label">อีเมล:</label>
+            <input type="email" id="email" name="email" required class="input-field"><br><br>
 
-            <label for="password" class="label"> รหัสผ่าน: </label>
-            <input type="password" id="password" name="password" required class="input-feild"><br><br>
+            <label for="password" class="label">รหัสผ่าน:</label>
+            <input type="password" id="password" name="password" required class="input-field"><br><br>
 
             <input type="submit" value="สมัครสมาชิก" class="btn">
         </form>
+
+        <p><?= $message ?></p>
+        <a href="login.php">เข้าสู่ระบบ</a>
     </div>
+
 </body>
 
 </html>
