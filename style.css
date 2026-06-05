@@ -1,29 +1,31 @@
 p{
     font-size: 20px;
-    color: darkblue;
+    color: blue;
 }
 
 h1{
     font-size: 30px;
-    color: crimson;
+    color: red;
 }
 
 .btn{
-    background-color: rgb(17, 81, 60);
-    color: aliceblue;
-    padding: 20px 10px;
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
     border: none;
     cursor: pointer;
+    border-radius: 20px;
 }
 
 .btn:hover{
-    background-color: black;
+    background-color: #000000;
 }
 
-.input-feild{
-    padding: 5px;
-    border: 1px solid black;
-    border-radius: 4px;
+.input-field{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    width: 98%;
 }
 
 .form-container{
@@ -34,11 +36,17 @@ h1{
     border-radius: 4px;
 }
 
+.label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
 .navbar{
     background-color: #333;
     overflow: hidden;
-
 }
+
 .navbar a{
     float: left;
     display: block;
@@ -46,4 +54,9 @@ h1{
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+} 
+
+
+.navbar a:hover{
+    background:#555;
 }
