@@ -1,6 +1,7 @@
 <?php
 include 'navbar.php';
 require "config.php";
+session_start();
 
 $message = "";
 
@@ -20,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user && password_verify($password, $user["password"])) {
         $_SESSION["user_id"] = $user["id"];
         $_SESSION["name"] = $user["name"];
+        $_SESSION["email"] = $user["email"];
 
         if (isset($_POST["remember"])) {
             setcookie("user_email", $email, time() + (86400 * 7), "/");
@@ -43,14 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <input type="email" name="email" placeholder="อีเมล"
            value="<?= $_COOKIE['user_email'] ?? '' ?>" class="input-field"><br> <br/>
 
-    <input type="password" name="password" placeholder="รหัสผ่าน" class="input-field"><br>
+    <input type="password" name="password" placeholder="รหัสผ่าน" class="input-field"><br><br>
 
     <label>
         <input type="checkbox" name="remember">
         จำอีเมลไว้
-    </label><br>
+    </label><br><br>
 
-    <button type="submit">Login</button>
+    <button type="submit" class="btn">Login</button>
 </form>
 
 <p><?= $message ?></p>

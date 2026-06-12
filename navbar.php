@@ -1,11 +1,10 @@
-<?php
-session_start();
-?>
 
 <div class="navbar">
     <a href="index.php">หน้าแรก</a>
     <a href="about.php">เกี่ยวกับเรา</a>
     <?php if (isset($_SESSION["user_id"])){?>
+        <a href="upload.php">อัปโหลด</a>
+        <a href="files.php">ไฟล์ของฉัน</a>
         <a href="profile.php">โปรไฟล์</a>
         <a href="logout.php">ออกจากระบบ</a>
     <?php }else {?>

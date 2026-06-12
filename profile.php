@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <link rel="stylesheet" href="style.css">
 
 <?php
@@ -29,6 +33,5 @@ mysqli_stmt_close($stmt);
 <p>รหัสผู้ใช้: <?= $user["id"] ?></p>
 <p>ชื่อ: <?= $user["name"] ?></p>
 <p>อีเมล: <?= $user["email"] ?></p>
-<p>วันที่สมัคร: <?= $user["created_at"] ?></p>
 
 <a href="logout.php">ออกจากระบบ</a>
