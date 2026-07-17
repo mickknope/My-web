@@ -64,28 +64,36 @@ buttons.forEach(button => {
     button.addEventListener('click', async () => {
         const relay = button.dataset.relay;
         const value = parseInt(button.dataset.value, 10);
+        const originalText = button.textContent;
+        
         button.disabled = true;
         button.textContent = 'กำลังอัปเดต...';
 
         try {
+            console.log('Sending:', { relay, value });
             const response = await fetch('api_set_relay.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ relay, value })
             });
 
+            console.log('Response status:', response.status);
             const result = await response.json();
+            console.log('Response result:', result);
+
             if (result.success) {
-                location.reload();
+                console.log('Success! Reloading page...');
+                setTimeout(() => location.reload(), 500);
             } else {
-                alert(result.message || 'อัปเดต relay ล้มเหลว');
+                alert('ข้อผิดพลาด: ' + (result.message || 'อัปเดต relay ล้มเหลว'));
                 button.disabled = false;
-                button.textContent = button.dataset.value === '1' ? 'เปิด Relay' : 'ปิด Relay';
+                button.textContent = originalText;
             }
         } catch (error) {
-            alert('เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ');
+            console.error('Catch error:', error);
+            alert('เชื่อมต่อไม่สำเร็จ: ' + error.message);
             button.disabled = false;
-            button.textContent = button.dataset.value === '1' ? 'เปิด Relay' : 'ปิด Relay';
+            button.textContent = originalText;
         }
     });
 });

@@ -36,12 +36,30 @@ if (!$stmt) {
 }
 
 $stmt->bind_param('i', $value);
-if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => 'Relay updated']);
-} else {
+if (!$stmt->execute()) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => $stmt->error]);
+    $stmt->close();
+    $conn->close();
+    exit;
 }
 
+if ($stmt->affected_rows === 0) {
+    $stmt->close();
+    $insertSql = "INSERT INTO relay_status (sw1, sw2, ldr, ry1, ry2, ry3, ry4, ry5) VALUES (0, 0, 0, 0, 0, 0, 0, 0)";
+    if (!$conn->query($insertSql)) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Database insert failed']);
+        $conn->close();
+        exit;
+    }
+    
+    $sql = "UPDATE relay_status SET $relay = ? ORDER BY id DESC LIMIT 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $value);
+    $stmt->execute();
+}
+
+echo json_encode(['success' => true, 'message' => 'Relay updated']);
 $stmt->close();
 $conn->close();
